@@ -18,7 +18,17 @@ class LabirintTurtle:
             print("Файл не найден или не соответствует небходимому формату.\nПроверьте, правильно ли записано имя файла и его корректность.")
 
     def show_map(self, turtle=False):
-        pass
+        if self.ismap and self.map == 1:
+            if turtle:
+                a = self.labirint[self.turtle[0]][self.turtle[1]]
+                self.labirint[self.turtle[0]][self.turtle[1]] = "🐢"
+            for i in self.labirint:
+                print(*i)
+            if turtle:
+                self.labirint[self.turtle[0]][self.turtle[1]] = a
+        else:
+            print("Ката не была загруженна или не является валидной")
+
 
     def check_map(self):
         if self.ismap:
@@ -48,4 +58,8 @@ class LabirintTurtle:
     def exit_show_step(self):
         pass
 
-print("🐢🐾")
+
+print("🐢           🐢")
+print("👣           🐾")
+print("👣           🐾")
+print("👣           🐾")
