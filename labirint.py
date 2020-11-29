@@ -9,7 +9,8 @@ class LabirintTurtle:
         try:
             file = open(name, "r")
             f = (file.read()).split("\n")
-            self.labirint = f[:len(f) - 2]
+            f1 = [list(i) for i in f]
+            self.labirint = f1[:len(f1) - 2]
             self.turtle.append(int(f[-2]))
             self.turtle.append(int(f[-1]))
             file.close()
@@ -34,13 +35,19 @@ class LabirintTurtle:
         if self.ismap:
             w = len(self.labirint[0])
             h = len(self.labirint)
-            if self.labirint[self.turtle[0]][self.turtle[1]] == "*":
+            if self.turtle[0] > h or self.turtle[1] > w:
                 self.map = 0
+                print(1)
+            if self.labirint[self.turtle[0]][self.turtle[1]] == "*" and self.map:
+                self.map = 0
+                print(2)
             if self.map:
                 for j in self.labirint:
                     for i in j:
-                        if i != " " or i != "*":
+                        if i != " " and i != "*":
                             self.map = 0
+                            print(3)
+                            break
             if self.map:
                 k = 0
                 if (" " not in self.labirint[0][1:w - 2:]) and (" " not in self.labirint[w - 1][1:w - 2:]):
@@ -50,7 +57,14 @@ class LabirintTurtle:
                             break
                     if not k:
                         self.map = 0
+                        print(4)
+            if self.map:
+                self.map = 1
+        else:
+            print("Карта не была загружена.")
 
+    def step(self):
+        pass
 
     def exit_count_step(self):
         pass
@@ -59,6 +73,17 @@ class LabirintTurtle:
         pass
 
 
+l = LabirintTurtle()
+l.load_map("hhbbj")
+l.check_map()
+l.show_map()
+l.load_map("L1.txt")
+l.check_map()
+l.show_map(turtle=True)
+print()
+print()
+print()
+print()
 print("🐢           🐢")
 print("👣           🐾")
 print("👣           🐾")
