@@ -4,6 +4,7 @@ class LabirintTurtle:
         self.turtle = []
         self.map = 2
         self.ismap = False
+        self.l = []
 
     def load_map(self, name="", *args, **kwargs):
         try:
@@ -11,6 +12,11 @@ class LabirintTurtle:
             f = (file.read()).split("\n")
             f1 = [list(i) for i in f]
             self.labirint = f1[:len(f1) - 2]
+            self.l = [[list(i) for i in j] for j in self.labirint]
+            self.l[int(f[-2])][int(f[-1])] = [0]
+            self.l[int(f[-2])][int(f[-1])].append(False)
+            self.l[int(f[-2])][int(f[-1])].append(True)
+            self.l[int(f[-2])][int(f[-1])].append([int(f[-2]), int(f[-1])])
             self.turtle.append(int(f[-2]))
             self.turtle.append(int(f[-1]))
             file.close()
@@ -63,8 +69,11 @@ class LabirintTurtle:
         else:
             print("Карта не была загружена.")
 
-    def step(self):
-        pass
+    def step(self, x, y):
+        a = self.l[y][x]
+        if self.l[y][x + 1] != "*" and self.l[y][x + 1][1]:
+            self.l[y][x + 1] = a[0] + 1
+
 
     def exit_count_step(self):
         pass
@@ -79,7 +88,7 @@ l.check_map()
 l.show_map()
 l.load_map("L1.txt")
 l.check_map()
-l.show_map(turtle=True)
+l.show_map()
 print()
 print()
 print()
