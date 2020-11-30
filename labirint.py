@@ -43,16 +43,13 @@ class LabirintTurtle:
             h = len(self.labirint)
             if self.turtle[0] > h or self.turtle[1] > w:
                 self.map = 0
-                print(1)
             if self.labirint[self.turtle[0]][self.turtle[1]] == "*" and self.map:
                 self.map = 0
-                print(2)
             if self.map:
                 for j in self.labirint:
                     for i in j:
                         if i != " " and i != "*":
                             self.map = 0
-                            print(3)
                             break
             if self.map:
                 k = 0
@@ -71,8 +68,52 @@ class LabirintTurtle:
 
     def step(self, x, y):
         a = self.l[y][x]
-        if self.l[y][x + 1] != "*" and self.l[y][x + 1][1]:
-            self.l[y][x + 1] = a[0] + 1
+        i = 1
+        a[1] = False
+        # вниз
+        while self.l[y + i][x] != "*":
+            s = self.l[y + i][x]
+            if (not s[0] and s[0] != 0) or (s[0] - i >= a[0]):
+                s[0] = a[0] + i
+                s[3] = self.l[y + i - 1][x]
+                s[3].append(x, y + i)
+            i += 1
+        i = 1
+        # вправо
+        while self.l[y][x + i] != "*":
+            s = self.l[y][x + i]
+            if (not s[0] and s[0] != 0) or (s[0] - i >= a[0]):
+                s[0] = a[0] + i
+                s[3] = self.l[y][x + i - 1]
+                s[3].append(x + i, y)
+            i += 1
+        i = 1
+        # влево
+        while self.l[y][x - i] != "*":
+            s = self.l[y][x - i]
+            if (not s[0] and s[0] != 0) or (s[0] - i >= a[0]):
+                s[0] = a[0] + i
+                s[3] = self.l[y][x - i + 1]
+                s[3].append(x - i, y)
+        i = 1
+        # вверх
+        while self.l[y - i][x] != "*":
+            s = self.l[y - i][x]
+            if (not s[0] and s[0] != 0) or (s[0] - i >= a[0]):
+                s[0] = a[0] + i
+                s[3] = self.l[y - i + 1][x]
+                s[3].append(x, y - i)
+        if (self.l[y - 1][x] != "*") and (self.l[y - 1][x][2]):
+            self.step(x, y - 1)
+        if (self.l[y][x - 1] != "*") and (self.l[y - 1][x][2]):
+            self.step(x - 1, y)
+        if (self.l[y + 1][x] != "*") and (self.l[y - 1][x][2]):
+            self.step(x, y + 1)
+        if (self.l[y][x + 1] != "*") and (self.l[y - 1][x][2]):
+            self.step(x + 1, y)
+        a[2] = False
+        return 0
+
 
 
     def exit_count_step(self):
