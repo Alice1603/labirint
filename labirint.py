@@ -1,12 +1,12 @@
 class LabirintTurtle:
     def __init__(self):
-        self.labirint = []
-        self.turtle = []
-        self.map = 2
-        self.ismap = False
-        self.l = []
-        self.enter = []
-        self.exit = []
+        self.labirint = []  # основная чистая карта
+        self.turtle = []  # координаты черепашки
+        self.map = 2  # состояние валидности
+        self.ismap = False  # наличие карты
+        self.l = []  # измененный лабиринт
+        self.enter = []  # координаты выходов
+        self.exit = []  # путь к выходам
 
     def map_l(self):
         w = len(self.l[0])
@@ -71,48 +71,54 @@ class LabirintTurtle:
                             self.map = 0
                             break
             # проверка на прямоугольность карты
-            for i in self.labirint:
-                if len(i) != w:
-                    self.map = 0
-                    break
-            for i in range(1, w - 1):
-                if self.labirint[0][i] == " ":
-                    if self.labirint[0][i - 1] != " " and self.labirint[0][i + 1] != " ":
-                        self.enter.append([i, 1])
-                    else:
+            if self.map:
+                for i in self.labirint:
+                    if len(i) != w:
                         self.map = 0
                         break
-                if self.labirint[-1][i] == " ":
-                    if self.labirint[-1][i - 1] != " " and self.labirint[-1][i + 1] != " ":
-                        self.enter.append([i, w - 2])
-                    else:
-                        self.map = 0
-                        break
-            for i in range(h):
-                if self.labirint[i][0] == " ":
-                    if self.labirint[i - 1][0] != " " and self.labirint[i + 1][0] != " ":
-                        self.enter.append([1, i])
-                    else:
-                        self.map = 0
-                        break
-                if self.labirint[i][-1] == " ":
-                    if self.labirint[i - 1][-1] != " " and self.labirint[i + 1][-1] != " ":
-                        self.enter.append([h - 2, i])
-                    else:
-                        self.map = 0
-                        break
-            if not self.enter:
+            if self.map:
+                for i in range(1, w - 1):
+                    if self.labirint[0][i] == " ":
+                        if self.labirint[0][i - 1] != " " and self.labirint[0][i + 1] != " ":
+                            self.enter.append([i, 1])
+                        else:
+                            self.map = 0
+                            break
+                    if self.labirint[-1][i] == " ":
+                        if self.labirint[-1][i - 1] != " " and self.labirint[-1][i + 1] != " ":
+                            self.enter.append([i, w - 2])
+                        else:
+                            self.map = 0
+                            break
+            if self.map:
+                for i in range(1, h - 1):
+                    if self.labirint[i][0] == " ":
+                        if self.labirint[i - 1][0] != " " and self.labirint[i + 1][0] != " ":
+                            self.enter.append([1, i])
+                        else:
+                            self.map = 0
+                            break
+                    if self.labirint[i][-1] == " ":
+                        if self.labirint[i - 1][-1] != " " and self.labirint[i + 1][-1] != " ":
+                            self.enter.append([h - 2, i])
+                        else:
+                            self.map = 0
+                            break
+            if not self.enter and self.map:
                 self.map = 0
             # поиск пути
-            self.step(self.turtle[0], self.turtle[1])
+            if self.map:
+                self.step(self.turtle[0], self.turtle[1])
             # проверка на замкнутость
             k = 0
-            for i in self.enter:
-                if not self.l[i[0]][i[1]][2]:
-                    k += 1
-                    self.exit.append([l[i[0]][i[1]][0], l[i[0]][i[1]][3]])
-            if k == 0:
-                self.map = 0
+            if self.map:
+                print(self.enter, self.l[3][1])
+                for i in self.enter:
+                    if not self.l[i[0]][i[1]][2]:
+                        k += 1
+                        self.exit.append(l[i[0]][i[1]])
+                if k == 0:
+                    self.map = 0
             if self.map:
                 self.map = 1
         else:
@@ -128,7 +134,7 @@ class LabirintTurtle:
             s = self.l[y + i][x]
             if (not s[0] and s[0] != 0) or (s[0] - i >= a[0]):
                 s[0] = a[0] + i
-                s[3] = self.l[y + i - 1][x]
+                s[3] = self.l[y + i - 1][x][3]
                 s[3].append(x)
                 s[3].append(y + i)
             i += 1
@@ -186,10 +192,8 @@ class LabirintTurtle:
 
 l = LabirintTurtle()
 l.load_map("hhbbj")
-l.check_map()
 l.show_map()
 l.load_map("L1.txt")
-l.check_map()
 l.show_map()
 print()
 print()
