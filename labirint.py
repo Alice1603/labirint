@@ -40,7 +40,7 @@ class LabirintTurtle:
             self.l = [[i for i in j] for j in self.labirint]
             self.lab = [[i for i in j] for j in self.labirint]
             self.map_l()
-            self.l[int(f[-1])][int(f[-2])][3] = [int(f[-1]), int(f[-2])]
+            self.l[int(f[-1])][int(f[-2])][3] = [int(f[-2]), int(f[-1])]
             self.l[int(f[-1])][int(f[-2])][0] = 0
             self.l[int(f[-1])][int(f[-2])][1] = False
             self.turtle.append(int(f[-2]))
@@ -95,6 +95,7 @@ class LabirintTurtle:
                 # проверка на прямоугольность карты
                 if self.map:
                     for i in self.labirint:
+                        print(len(i))
                         if len(i) != w:
                             self.map = 0
                             break
@@ -209,14 +210,17 @@ class LabirintTurtle:
         except:
             print("Пожалуйста не запускайте функции, не относящиеся к программе")
 
-    def wo(self, a):
-        if a % 10 == 1 and a % 100 != 11:
-            return str(a) + " шаг"
-        if (a % 10 == 3 or a % 10 == 2 or a % 10 == 3) and (a % 100) // 10 != 1:
-            return str(a) + " шага"
-        return str(a) + " шагов"
+    def wo(self, a, *args, **kwargs):
+        try:
+            if a % 10 == 1 and a % 100 != 11:
+                return str(a) + " шаг"
+            if (a % 10 == 3 or a % 10 == 2 or a % 10 == 3) and (a % 100) // 10 != 1:
+                return str(a) + " шага"
+            return str(a) + " шагов"
+        except:
+            print("Пожалуйста не запускайте функции, не относящиеся к программе")
 
-    def n_e(self):
+    def n_e(self, *args, **kwargs):
         if self.map:
             for i in self.exit:
                 if i[0][0] < self.way or self.way == -1:
@@ -226,80 +230,84 @@ class LabirintTurtle:
                     self.tr.append(i[2])
 
     def exit_count_step(self, *args, **kwargs):
-        if self.map:
+        if self.map == 1:
             print("До ближайшего выхода", self.wo(self.way + 1))
+        else:
+            print("Ката не была загруженна или не является валидной")
 
     def exit_show_step(self, *args, **kwargs):
-        if self.opis == []:
-            self.lab[self.turtle[1]][self.turtle[0]] = "🐢"
-            self.lab[self.tr[-1]][self.tr[-2]] = "🏁"
-            p = 0
-            k = 0
-            for i in range(1, self.way + 1):
-                x = self.tr[i * 2] - self.tr[i * 2 - 2]
-                y = self.tr[i * 2 + 1] - self.tr[i * 2 - 1]
-                print(self.tr)
-                if x == -1:
-                    if p == 3:
-                        self.opis.append("Вниз на " + self.wo(k))
-                        k = 0
-                    if p == 4:
-                        self.opis.append("Вверх на " + self.wo(k))
-                        k = 0
-                    self.lab[self.tr[i * 2 + 1]][self.tr[i * 2]] = "🠔"
-                    p = 1
-                    k += 1
-                elif x == 1:
-                    if p == 3:
-                        self.opis.append("Вниз на " + self.wo(k))
-                        k = 0
-                    if p == 4:
-                        self.opis.append("Вверх на " + self.wo(k))
-                    self.lab[self.tr[i * 2 + 1]][self.tr[i * 2]] = "🠖"
-                    p = 2
-                    k += 1
-                elif y == 1:
-                    if p == 1:
-                        self.opis.append("Влево на " + self.wo(k))
-                        k = 0
-                    if p == 2:
-                        self.opis.append("Вправо на " + self.wo(k))
-                        k = 0
-                    self.lab[self.tr[i * 2 + 1]][self.tr[i * 2]] = "🠗"
-                    p = 3
-                    k += 1
+        if self.map == 1:
+            if self.opis == []:
+                self.lab[self.turtle[1]][self.turtle[0]] = "🐢"
+                self.lab[self.tr[-1]][self.tr[-2]] = "🏁"
+                p = 0
+                k = 0
+                for i in range(1, self.way + 1):
+                    x = self.tr[i * 2] - self.tr[i * 2 - 2]
+                    y = self.tr[i * 2 + 1] - self.tr[i * 2 - 1]
+                    if x == -1:
+                        if p == 3:
+                            self.opis.append("Вниз на " + self.wo(k))
+                            k = 0
+                        if p == 4:
+                            self.opis.append("Вверх на " + self.wo(k))
+                            k = 0
+                        self.lab[self.tr[i * 2 + 1]][self.tr[i * 2]] = "🠔"
+                        p = 1
+                        k += 1
+                    elif x == 1:
+                        if p == 3:
+                            self.opis.append("Вниз на " + self.wo(k))
+                            k = 0
+                        if p == 4:
+                            self.opis.append("Вверх на " + self.wo(k))
+                        self.lab[self.tr[i * 2 + 1]][self.tr[i * 2]] = "🠖"
+                        p = 2
+                        k += 1
+                    elif y == 1:
+                        if p == 1:
+                            self.opis.append("Влево на " + self.wo(k))
+                            k = 0
+                        if p == 2:
+                            self.opis.append("Вправо на " + self.wo(k))
+                            k = 0
+                        self.lab[self.tr[i * 2 + 1]][self.tr[i * 2]] = "🠗"
+                        p = 3
+                        k += 1
+                    else:
+                        if p == 1:
+                            self.opis.append("Влево на " + self.wo(k))
+                            k = 0
+                        if p == 2:
+                            self.opis.append("Вправо на " + self.wo(k))
+                            k = 0
+                        self.lab[self.tr[i * 2 + 1]][self.tr[i * 2]] = "🠕"
+                        p = 4
+                        k += 1
+                if p == 1:
+                    self.opis.append("Влево на " + self.wo(k))
+                if p == 2:
+                    self.opis.append("Вправо на " + self.wo(k))
+                if p == 3:
+                    self.opis.append("Вниз на " + self.wo(k))
+                if p == 4:
+                    self.opis.append("Вверх на " + self.wo(k))
+            for i in self.opis:
+                print(i)
+            for i in self.lab:
+                for j in range(len(i) - 1):
+                    if i[j] == "*" or i[j] == " ":
+                        print(i[j], end="\t")
+                    elif i[j] == "🏁":
+                        print(colored(i[j], "red"), end="\t")
+                    else:
+                        print(colored(i[j], "green"), end="\t")
+                if i[-1] == "🏁":
+                    print(colored(i[-1], "red"))
                 else:
-                    if p == 1:
-                        self.opis.append("Влево на " + self.wo(k))
-                        k = 0
-                    if p == 2:
-                        self.opis.append("Вправо на " + self.wo(k))
-                        k = 0
-                    self.lab[self.tr[i * 2 + 1]][self.tr[i * 2]] = "🠕"
-                    p = 4
-                    k += 1
-            if p == 1:
-                self.opis.append("Влево на " + self.wo(k))
-            if p == 2:
-                self.opis.append("Вправо на " + self.wo(k))
-            if p == 3:
-                self.opis.append("Вниз на " + self.wo(k))
-            if p == 4:
-                self.opis.append("Вверх на " + self.wo(k))
-        for i in self.opis[::-1]:
-            print(i)
-        for i in self.lab:
-            for j in range(len(i) - 1):
-                if i[j] == "*" or i[j] == " ":
-                    print(i[j], end="\t")
-                elif i[j] == "🏁":
-                    print(colored(i[j], "red"), end="\t")
-                else:
-                    print(colored(i[j], "green"), end="\t")
-            if i[j] == "🏁":
-                print(colored(i[j], "red"))
-            else:
-                print(i[-1])
+                    print(i[-1])
+        else:
+            print("Ката не была загруженна или не является валидной")
 
 
 l = LabirintTurtle()
