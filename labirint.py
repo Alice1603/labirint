@@ -43,6 +43,7 @@ class LabirintTurtle:
             self.l[int(f[-1])][int(f[-2])][3] = [int(f[-2]), int(f[-1])]
             self.l[int(f[-1])][int(f[-2])][0] = 0
             self.l[int(f[-1])][int(f[-2])][1] = False
+            print(1)
             self.turtle.append(int(f[-2]))
             self.turtle.append(int(f[-1]))
             file.close()
@@ -81,7 +82,7 @@ class LabirintTurtle:
                 w = len(self.labirint[0])
                 h = len(self.labirint)
                 # проверка на позицию черепашки
-                if self.turtle[1] > h - 1 or self.turtle[0] > w - 1:
+                if self.turtle[1] >= h - 1 or self.turtle[0] >= w - 1 or self.turtle[0] == 0 or self.turtle[1] == 0:
                     self.map = 0
                 if self.labirint[self.turtle[1]][self.turtle[0]] == "*" and self.map:
                     self.map = 0
@@ -95,7 +96,6 @@ class LabirintTurtle:
                 # проверка на прямоугольность карты
                 if self.map:
                     for i in self.labirint:
-                        print(len(i))
                         if len(i) != w:
                             self.map = 0
                             break
@@ -239,10 +239,9 @@ class LabirintTurtle:
         if self.map == 1:
             if self.opis == []:
                 self.lab[self.turtle[1]][self.turtle[0]] = "🐢"
-                self.lab[self.tr[-1]][self.tr[-2]] = "🏁"
                 p = 0
                 k = 0
-                for i in range(1, self.way + 1):
+                for i in range(1, self.way + 2):
                     x = self.tr[i * 2] - self.tr[i * 2 - 2]
                     y = self.tr[i * 2 + 1] - self.tr[i * 2 - 1]
                     if x == -1:
@@ -292,6 +291,7 @@ class LabirintTurtle:
                     self.opis.append("Вниз на " + self.wo(k))
                 if p == 4:
                     self.opis.append("Вверх на " + self.wo(k))
+                self.lab[self.tr[-1]][self.tr[-2]] = "🏁"
             for i in self.opis:
                 print(i)
             for i in self.lab:
@@ -308,10 +308,3 @@ class LabirintTurtle:
                     print(i[-1])
         else:
             print("Ката не была загруженна или не является валидной")
-
-
-l = LabirintTurtle()
-l.load_map("L1.txt")
-l.show_map(turtle=True)
-l.exit_count_step()
-l.exit_show_step()
