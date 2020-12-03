@@ -2,7 +2,7 @@ from termcolor import colored
 
 
 class LabirintTurtle:
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
         self.opis = []
         self.lab = []
         self.tr = []
@@ -308,3 +308,4 @@ class LabirintTurtle:
                     print(i[-1])
         else:
             print("Ката не была загруженна или не является валидной")
+
